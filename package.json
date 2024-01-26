@@ -14,5 +14,11 @@
   "devDependencies": {
     "typescript": "^5.3.3"
   },
-  "repository": "git@github.com:jack-barr3tt/discord-rtt.git"
+  "repository": "git@github.com:jack-barr3tt/discord-rtt.git",
+  "dependencies": {
+    "date-fns": "^3.3.1",
+    "discord.js": "^14.14.1",
+    "dotenv": "^16.4.1",
+    "rttapi": "^0.0.8"
+  }
 }
