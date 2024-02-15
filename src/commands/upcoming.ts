@@ -38,7 +38,7 @@ export default async function Upcoming(message: Message<boolean>, args: string[]
           const booked = stop.bookedArrival || stop.bookedDeparture
 
           // How late the train is
-          const lateness = !realtime || !booked ? 0 : differenceInMinutes(booked, realtime)
+          const lateness = !realtime || !booked ? 0 : differenceInMinutes(realtime, booked)
 
           // Format realtime departure
           const formattedTime = realtime ? format(realtime, "HH:mm") : "?"
