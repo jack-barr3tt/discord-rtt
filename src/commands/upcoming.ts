@@ -19,23 +19,23 @@ export default async function Upcoming(message: Message<boolean>, args: string[]
   const services = await Promise.all(
     origin.services
       .filter((_, i) => i < 3)
-      .map(async (service) => await rttClient.service.get(service.id, service.runDate))
+      .map(async (service) => await rttClient.service.get(service.serviceUid, service.runDate))
   )
 
   // Get info about when each service stops at the origin station
   const originStops = services.map((service) =>
-    service.stops.find((stop) => stop.crs.toLowerCase() === args[0].toLowerCase())
+    service.locations.find((stop) => stop.crs.toLowerCase() === args[0].toLowerCase())
   )
 
   const embed = new EmbedBuilder()
-    .setTitle(`${origin.name} to ${destination.name}`)
+    .setTitle(`${origin.location.name} to ${destination.location.name}`)
     .setColor("#39bdb8")
     .setDescription(
       originStops
         .map((stop) => {
           // Trains at their origin won't have an arrival time, only a departure time
           const realtime = stop.realtimeArrival || stop.realtimeDeparture
-          const booked = stop.bookedArrival || stop.bookedDeparture
+          const booked = stop.gbttBookedArrival || stop.gbttBookedDeparture
 
           // How late the train is
           const lateness = !realtime || !booked ? 0 : differenceInMinutes(realtime, booked)
@@ -44,7 +44,7 @@ export default async function Upcoming(message: Message<boolean>, args: string[]
           const formattedTime = realtime ? format(realtime, "HH:mm") : "?"
 
           // Platform info
-          const platformInfo = `Platform: ${stop.platform?.name || "?"}`
+          const platformInfo = `Platform: ${stop.platform || "?"}`
 
           // Return formatted string
           if (lateness < 0) return `:blue_circle: ${formattedTime} (${lateness}) ${platformInfo}`

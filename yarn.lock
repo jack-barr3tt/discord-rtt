@@ -176,10 +176,10 @@ magic-bytes.js@^1.5.0:
   resolved "https://registry.yarnpkg.com/magic-bytes.js/-/magic-bytes.js-1.8.0.tgz#8362793c60cd77c2dd77db6420be727192df68e2"
   integrity sha512-lyWpfvNGVb5lu8YUAbER0+UMBTdR63w2mcSUlhhBTyVbxJvjgqwyAf3AZD6MprgK0uHuBoWXSDAMWLupX83o3Q==
 
-rttapi@^0.0.8:
-  version "0.0.8"
-  resolved "https://registry.yarnpkg.com/rttapi/-/rttapi-0.0.8.tgz#f0504b762850b41b30e374a492cb04ad7925b230"
-  integrity sha512-wz+PeonuN+GlLG52teTZUwwmg+1jUV6CMzR17730xsPkh3G+N/jY2exuB8JepDr5MtUfr88lGISfcyIfX+OtWw==
+rttapi@^0.1.0:
+  version "0.1.0"
+  resolved "https://registry.yarnpkg.com/rttapi/-/rttapi-0.1.0.tgz#76993673f9f8c83cf9d808316b5120d83b8820a3"
+  integrity sha512-YWLFV4z0fMec3FaJhn6EiykhDStdFcQj9au4XjDWBgRxg00CSFLVg8XhMLR+auojzKGlb7ttprtjVbFRq8bV6w==
 
 ts-mixer@^6.0.3:
   version "6.0.3"
