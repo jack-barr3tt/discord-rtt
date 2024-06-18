@@ -23,6 +23,9 @@ client.on("ready", async () => {
   console.log("Uploading commands...")
   await client.uploadCommands()
 
+  console.log("Fetching stations...")
+  await client.fetchStations()
+
   console.log("Ready!")
 })
 
@@ -46,19 +49,29 @@ client.on("messageCreate", async (message) => {
 })
 
 client.on("interactionCreate", async (interaction) => {
-  if (!interaction.isCommand()) return
+  if (interaction.isCommand()) {
+    const { commandName } = interaction
 
-  const { commandName } = interaction
+    const command = client.commands.get(commandName)
 
-  const command = client.commands.get(commandName)
+    if (!command) return
 
-  if (!command) return
+    try {
+      await command.execute(interaction)
+    } catch (err) {
+      console.error(err)
+      await interaction.reply("There was an error trying to execute that command!")
+    }
+  } else if (interaction.isAutocomplete()) {
+    const command = client.commands.get(interaction.commandName)
 
-  try {
-    await command.execute(interaction)
-  } catch (err) {
-    console.error(err)
-    await interaction.reply("There was an error trying to execute that command!")
+    if (!command) return
+
+    try {
+      await command.autocomplete(interaction, client.stations)
+    } catch (err) {
+      console.error(err)
+    }
   }
 })
 

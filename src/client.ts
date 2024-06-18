@@ -9,7 +9,7 @@ import {
   Routes,
   SlashCommandBuilder,
 } from "discord.js"
-import { CommandConfig } from "./types.js"
+import { CommandConfig, RTTStation } from "./types.js"
 import { config } from "dotenv"
 import loadashpkg from "lodash"
 
@@ -17,8 +17,16 @@ const { isEqual } = loadashpkg
 
 config()
 
+function filterUndefinedProps<T extends object>(obj: T): Partial<T> {
+  return Object.fromEntries(
+    Object.entries(obj).filter(([_, value]) => value !== undefined)
+  ) as Partial<T>
+}
+
 export class WMTClient extends Client {
   commands: Collection<string, CommandConfig> = new Collection()
+
+  stations: RTTStation[] = []
 
   addCommand(command: CommandConfig) {
     this.commands.set(command.name, { ...command, data: command.data.setName(command.name) })
@@ -43,7 +51,11 @@ export class WMTClient extends Client {
         if (!sameName) return false
         const sameProps = sameName.description === cmd.description
 
-        const sameOptions = isEqual(sameName.options, cmd.options)
+        const sameOptions = isEqual(
+          sameName.options.map((o) => filterUndefinedProps(o)),
+          cmd.options.map((o) => filterUndefinedProps(o))
+        )
+
         return sameName && (!sameProps || !sameOptions)
       })
       .map((cmd) => {
@@ -82,7 +94,7 @@ export class WMTClient extends Client {
     }
   }
 
-  public async uploadCommands() {
+  async uploadCommands() {
     const guilds = JSON.parse(process.env.GUILDS || "[]") as string[]
 
     await Promise.all(
@@ -93,5 +105,12 @@ export class WMTClient extends Client {
         )
       )
     )
+  }
+
+  async fetchStations() {
+    const req = await fetch("https://www.realtimetrains.co.uk/php/ajax_search.php?type=stations")
+    const res = await req.json()
+
+    this.stations = res
   }
 }

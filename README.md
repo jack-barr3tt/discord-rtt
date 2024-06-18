@@ -10,7 +10,7 @@ Use the [Realtime Trains API](https://www.realtimetrains.co.uk/) from your Disco
 
 ## ✨ Slash Commands
 
-- `/between <origin> <destination>` - Get the next train between two stations using their [CRS codes](https://www.rail-record.co.uk/railway-location-codes)
+- `/between <origin> <destination>` - Get the next train between two stations. Both fields have autocomplete, so you can use the station name or the CRS code - whatever you prefer!
 
 # 💾 Setup Guide
 
