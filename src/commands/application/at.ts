@@ -1,37 +1,29 @@
 import { AutocompleteInteraction, SlashCommandBuilder } from "discord.js"
-import { betweenCommon } from "../common/between.js"
 import { RTTStation } from "../../types.js"
 import { stationAutocomplete } from "./autocomplete/station.js"
+import { atCommon } from "../common/at.js"
 
-export const between = {
-  name: "between",
+export const at = {
+  name: "at",
   data: new SlashCommandBuilder()
-    .setDescription("See the next 3 trains between two stations")
+    .setDescription("See upcoming departures at a station")
     .addStringOption((option) =>
       option
-        .setName("origin")
-        .setDescription("The station you will start your journey from")
-        .setRequired(true)
-        .setAutocomplete(true)
-    )
-    .addStringOption((option) =>
-      option
-        .setName("destination")
-        .setDescription("The station you will end your journey at")
+        .setName("station")
+        .setDescription("The station to see upcoming departures for")
         .setRequired(true)
         .setAutocomplete(true)
     ),
   execute: async (interaction) => {
-    const origin = interaction.options.getString("origin")
-    const destination = interaction.options.getString("destination")
+    const station = interaction.options.getString("station")
 
     try {
-      const embed = await betweenCommon(origin, destination)
+      const embed = await atCommon(station)
 
       await interaction.reply({ embeds: [embed] })
     } catch (err) {
       if (err.message === "unknown error occurred")
-        return await interaction.reply("Invalid station(s)!")
+        return await interaction.reply("Invalid station!")
 
       console.error(err)
       return await interaction.reply("There was an error trying to execute that command!")

@@ -3,6 +3,7 @@ import { config } from "dotenv"
 import Upcoming from "./commands/text/between.js"
 import { WMTClient } from "./client.js"
 import { importCommands } from "./commands/slashCommands.js"
+import At from "./commands/text/at.js"
 
 // Get environment variables from .env file
 config()
@@ -40,6 +41,9 @@ client.on("messageCreate", async (message) => {
     switch (CMD_NAME) {
       case "t":
         await Upcoming(message, args)
+        break
+      case "a":
+        await At(message, args)
         break
     }
   } catch (err) {

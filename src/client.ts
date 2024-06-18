@@ -41,7 +41,7 @@ export class WMTClient extends Client {
       Routes.applicationGuildCommands(this.user?.id || "", guildId)
     )) as RESTGetAPIApplicationGuildCommandsResult
 
-    console.log(`Current there are ${current.length} commands`)
+    console.log(`Currently there are ${current.length} commands`)
 
     const additions = commands.filter((cmd) => !current.find((c) => c.name === cmd.name))
     const removals = current.filter((cmd) => !commands.find((c) => c.name === cmd.name))
