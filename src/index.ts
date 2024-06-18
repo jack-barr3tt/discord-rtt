@@ -1,11 +1,13 @@
-import { Client, GatewayIntentBits } from "discord.js"
+import { GatewayIntentBits } from "discord.js"
 import { config } from "dotenv"
-import Upcoming from "./commands/upcoming.js"
+import Upcoming from "./commands/text/between.js"
+import { WMTClient } from "./client.js"
+import { importCommands } from "./commands/slashCommands.js"
 
 // Get environment variables from .env file
 config()
 
-const client = new Client({
+const client = new WMTClient({
   intents: [
     // Intents needed to get messages in guilds
     GatewayIntentBits.Guilds,
@@ -14,7 +16,13 @@ const client = new Client({
   ],
 })
 
-client.on("ready", () => {
+client.on("ready", async () => {
+  console.log("Importing commands...")
+  importCommands(client)
+
+  console.log("Uploading commands...")
+  await client.uploadCommands()
+
   console.log("Ready!")
 })
 
@@ -34,6 +42,23 @@ client.on("messageCreate", async (message) => {
   } catch (err) {
     console.error(err)
     await message.reply("There was an error trying to execute that command!")
+  }
+})
+
+client.on("interactionCreate", async (interaction) => {
+  if (!interaction.isCommand()) return
+
+  const { commandName } = interaction
+
+  const command = client.commands.get(commandName)
+
+  if (!command) return
+
+  try {
+    await command.execute(interaction)
+  } catch (err) {
+    console.error(err)
+    await interaction.reply("There was an error trying to execute that command!")
   }
 })
 
