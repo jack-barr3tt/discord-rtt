@@ -2,13 +2,17 @@
 
 Use the [Realtime Trains API](https://www.realtimetrains.co.uk/) from your Discord server!
 
-# Features
+# 👌 Features
 
-## Text Commands
+## 📝 Text Commands
 
 - `,t <origin> <destination>` - Get the next train between two stations using their [CRS codes](https://www.rail-record.co.uk/railway-location-codes)
 
-# Setup Guide
+## ✨ Slash Commands
+
+- `/between <origin> <destination>` - Get the next train between two stations using their [CRS codes](https://www.rail-record.co.uk/railway-location-codes)
+
+# 💾 Setup Guide
 
 1. Clone this repository
 2. Install dependencies using `npm i` or `yarn`
