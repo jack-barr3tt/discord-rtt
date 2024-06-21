@@ -32,6 +32,10 @@ export const at = {
   autocomplete: async (interaction: AutocompleteInteraction, stations: RTTStation[]) => {
     const focusedValue = interaction.options.getFocused().toLowerCase()
 
-    await interaction.respond(stationAutocomplete(focusedValue, stations))
+    try {
+      await interaction.respond(stationAutocomplete(focusedValue, stations))
+    } catch (err) {
+      console.error(err)
+    }
   },
 }
