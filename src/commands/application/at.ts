@@ -2,6 +2,7 @@ import { AutocompleteInteraction, SlashCommandBuilder } from "discord.js"
 import { RTTStation } from "../../types.js"
 import { stationAutocomplete } from "./autocomplete/station.js"
 import { atCommon } from "../common/at.js"
+import { error } from "../common/error.js"
 
 export const at = {
   name: "at",
@@ -23,10 +24,12 @@ export const at = {
       await interaction.reply({ embeds: [embed] })
     } catch (err) {
       if (err.message === "unknown error occurred")
-        return await interaction.reply("Invalid station!")
+        return await interaction.reply({ embeds: [error("Invalid station!")] })
 
       console.error(err)
-      return await interaction.reply("There was an error trying to execute that command!")
+      return await interaction.reply({
+        embeds: [error("There was an error trying to execute that command!")],
+      })
     }
   },
   autocomplete: async (interaction: AutocompleteInteraction, stations: RTTStation[]) => {
