@@ -12,13 +12,13 @@
   "author": "Jack Barrett <jjbdev21@gmail.com>",
   "license": "ISC",
   "devDependencies": {
+    "discord-api-types": "^0.37.90",
     "@types/lodash": "^4.17.5",
     "typescript": "^5.3.3"
   },
   "repository": "git@github.com:jack-barr3tt/discord-rtt.git",
   "dependencies": {
     "date-fns": "^3.3.1",
-    "discord-api-types": "^0.37.90",
     "discord.js": "^14.14.1",
     "dotenv": "^16.4.1",
     "lodash": "^4.17.21",
