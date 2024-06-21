@@ -24,11 +24,12 @@ export const at = {
       await interaction.reply({ embeds: [embed] })
     } catch (err) {
       if (err.message === "unknown error occurred")
-        return await interaction.reply({ embeds: [error("Invalid station!")] })
+        return await interaction.reply({ embeds: [error("Invalid station!")], ephemeral: true })
 
       console.error(err)
       return await interaction.reply({
         embeds: [error("There was an error trying to execute that command!")],
+        ephemeral: true,
       })
     }
   },

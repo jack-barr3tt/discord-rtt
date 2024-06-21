@@ -32,11 +32,12 @@ export const between = {
       await interaction.reply({ embeds: [embed] })
     } catch (err) {
       if (err.message === "unknown error occurred")
-        return await interaction.reply({ embeds: [error("Invalid station(s)!")] })
+        return await interaction.reply({ embeds: [error("Invalid station(s)!")], ephemeral: true })
 
       console.error(err)
       return await interaction.reply({
         embeds: [error("There was an error trying to execute that command!")],
+        ephemeral: true,
       })
     }
   },
