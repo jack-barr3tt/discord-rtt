@@ -1,6 +1,7 @@
 import { differenceInMinutes, format } from "date-fns"
 import { EmbedBuilder } from "discord.js"
 import { RTTClient } from "rttapi"
+import tocEmoji from "./emojis.js"
 
 export async function betweenCommon(originCRS: string, destinationCRS: string) {
   // Realtime Trains API client
@@ -20,16 +21,17 @@ export async function betweenCommon(originCRS: string, destinationCRS: string) {
   )
 
   // Get info about when each service stops at the origin station
-  const originStops = services.map((service) =>
-    service.locations.find((stop) => stop.crs.toLowerCase() === originCRS.toLowerCase())
-  )
+  const originStops = services.map((service) => ({
+    service,
+    stop: service.locations.find((stop) => stop.crs.toLowerCase() === originCRS.toLowerCase()),
+  }))
 
   return new EmbedBuilder()
     .setTitle(`${origin.location.name} to ${destination.location.name}`)
     .setColor("#39bdb8")
     .setDescription(
       originStops
-        .map((stop) => {
+        .map(({ service, stop }) => {
           // Trains at their origin won't have an arrival time, only a departure time
           const realtime = stop.realtimeArrival || stop.realtimeDeparture
           const booked = stop.gbttBookedArrival || stop.gbttBookedDeparture
@@ -43,10 +45,15 @@ export async function betweenCommon(originCRS: string, destinationCRS: string) {
           // Platform info
           const platformInfo = stop.platform ? `Platform: ${stop.platform}` : ""
 
+          // Operator emoji
+          const operatorInfo = tocEmoji(service.atocCode) ? `${tocEmoji(service.atocCode)} ` : ""
+
           // Return formatted string
-          if (lateness < 0) return `:blue_circle: ${formattedTime} (${lateness}) ${platformInfo}`
-          if (lateness > 0) return `:red_circle: ${formattedTime} (+${lateness}) ${platformInfo}`
-          return `:green_circle: ${formattedTime} ${platformInfo}`
+          if (lateness < 0)
+            return `${operatorInfo}:blue_circle: ${formattedTime} (${lateness}) ${platformInfo}`
+          if (lateness > 0)
+            return `${operatorInfo}:red_circle: ${formattedTime} (+${lateness}) ${platformInfo}`
+          return `${operatorInfo}:green_circle: ${formattedTime} ${platformInfo}`
         })
         .join("\n")
     )

@@ -1,6 +1,7 @@
 import { differenceInMinutes, format } from "date-fns"
 import { EmbedBuilder } from "discord.js"
 import { RTTClient } from "rttapi"
+import tocEmoji from "./emojis.js"
 
 export async function atCommon(stationCRS: string) {
   // Realtime Trains API client
@@ -39,14 +40,18 @@ export async function atCommon(stationCRS: string) {
           // Platform info
           const platformInfo = stop.platform ? `- Platform: ${stop.platform}` : ""
 
+          // Destination info
           const destinationInfo = service.destination.map((d) => d.description).join(" & ")
+
+          // Operator emoji
+          const operatorInfo = tocEmoji(service.atocCode) ? `${tocEmoji(service.atocCode)} ` : ""
 
           // Return formatted string
           if (lateness < 0)
-            return `:blue_circle: ${formattedTime} (${lateness}) ${destinationInfo} ${platformInfo}`
+            return `${operatorInfo}:blue_circle: ${formattedTime} (${lateness}) ${destinationInfo} ${platformInfo}`
           if (lateness > 0)
-            return `:red_circle: ${formattedTime} (+${lateness})  ${destinationInfo} ${platformInfo}`
-          return `:green_circle: ${formattedTime} ${destinationInfo} ${platformInfo}`
+            return `${operatorInfo}:red_circle: ${formattedTime} (+${lateness})  ${destinationInfo} ${platformInfo}`
+          return `${operatorInfo}:green_circle: ${formattedTime} ${destinationInfo} ${platformInfo}`
         })
         .join("\n")
     )
