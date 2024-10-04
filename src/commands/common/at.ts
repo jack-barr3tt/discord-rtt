@@ -37,6 +37,11 @@ export async function atCommon(stationCRS: string) {
           // Format realtime departure
           const formattedTime = realtime ? format(realtime, "HH:mm") : format(booked, "HH:mm")
 
+          // Realtime Trains website link
+          const rttLink = `https://www.realtimetrains.co.uk/service/gb-nr:${
+            service.serviceUid
+          }/${format(booked, "yyyy-MM-dd")}`
+
           // Platform info
           const platformInfo = stop.platform ? `- Platform: ${stop.platform}` : ""
 
@@ -48,10 +53,10 @@ export async function atCommon(stationCRS: string) {
 
           // Return formatted string
           if (lateness < 0)
-            return `${operatorInfo}:blue_circle: ${formattedTime} (${lateness}) ${destinationInfo} ${platformInfo}`
+            return `${operatorInfo}:blue_circle: [${formattedTime}](${rttLink}) (${lateness}) ${destinationInfo} ${platformInfo}`
           if (lateness > 0)
-            return `${operatorInfo}:red_circle: ${formattedTime} (+${lateness})  ${destinationInfo} ${platformInfo}`
-          return `${operatorInfo}:green_circle: ${formattedTime} ${destinationInfo} ${platformInfo}`
+            return `${operatorInfo}:red_circle: [${formattedTime}](${rttLink}) (+${lateness})  ${destinationInfo} ${platformInfo}`
+          return `${operatorInfo}:green_circle: [${formattedTime}](${rttLink}) ${destinationInfo} ${platformInfo}`
         })
         .join("\n")
     )

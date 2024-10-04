@@ -42,6 +42,10 @@ export async function betweenCommon(originCRS: string, destinationCRS: string) {
           // Format realtime departure
           const formattedTime = realtime ? format(realtime, "HH:mm") : format(booked, "HH:mm")
 
+          const rttLink = `https://www.realtimetrains.co.uk/service/gb-nr:${
+            service.serviceUid
+          }/${format(booked, "yyyy-MM-dd")}`
+
           // Platform info
           const platformInfo = stop.platform ? `Platform: ${stop.platform}` : ""
 
@@ -50,10 +54,10 @@ export async function betweenCommon(originCRS: string, destinationCRS: string) {
 
           // Return formatted string
           if (lateness < 0)
-            return `${operatorInfo}:blue_circle: ${formattedTime} (${lateness}) ${platformInfo}`
+            return `${operatorInfo}:blue_circle: [${formattedTime}](${rttLink}) (${lateness}) ${platformInfo}`
           if (lateness > 0)
-            return `${operatorInfo}:red_circle: ${formattedTime} (+${lateness}) ${platformInfo}`
-          return `${operatorInfo}:green_circle: ${formattedTime} ${platformInfo}`
+            return `${operatorInfo}:red_circle: [${formattedTime}](${rttLink}) (+${lateness}) ${platformInfo}`
+          return `${operatorInfo}:green_circle: [${formattedTime}](${rttLink}) ${platformInfo}`
         })
         .join("\n")
     )
