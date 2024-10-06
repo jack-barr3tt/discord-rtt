@@ -58,8 +58,8 @@ export class WMTClient extends Client {
         const sameProps = sameName.description === cmd.description
 
         const sameOptions = isEqual(
-          sameName.options.map((o) => filterUndefinedProps(o)),
-          cmd.options.map((o) => filterUndefinedProps(o))
+          sameName.options?.map((o) => filterUndefinedProps(o)),
+          cmd.options?.map((o) => filterUndefinedProps(o))
         )
 
         return sameName && (!sameProps || !sameOptions)

@@ -4,6 +4,7 @@ import Upcoming from "./commands/text/between.js"
 import { WMTClient } from "./client.js"
 import { importCommands } from "./commands/slashCommands.js"
 import At from "./commands/text/at.js"
+import Help from "./commands/text/help.js"
 
 // Get environment variables from .env file
 config()
@@ -44,6 +45,9 @@ client.on("messageCreate", async (message) => {
         break
       case "a":
         await At(message, args)
+        break
+      case "help":
+        await Help(message)
         break
     }
   } catch (err) {
